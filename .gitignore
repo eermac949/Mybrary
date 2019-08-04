@@ -1,0 +1,4 @@
+# Don't include env as may have sensitive information
+.env
+#Use .JSON file to include node_modules
+node_modules
