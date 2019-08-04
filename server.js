@@ -20,7 +20,7 @@ app.use(express.static('public'))
 const mongoose = require('mongoose')//import mongoose
 //Using.env need to use npm env dev thing
 mongoose.connect(process.env.DATABASE_URL, {
-    useNewUrLParser: true})//Mongoose uses old method from mongoDB
+    useNewUrlParser: true})//Mongoose uses old method from mongoDB
     const db = mongoose.connection
     db.on('error', error => console.error(error))
     db.once('open', () => console.log('Connected to Mongoose'))
