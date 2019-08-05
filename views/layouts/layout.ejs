@@ -7,11 +7,11 @@
     <title>Mybrary</title>
 </head>
 <body>
-    Before
     <br>
     <%# Includes every other page in the body page %>
+    <%- include('../partials/header.ejs') %>
+    <%- include('../partials/errorMessage.ejs') %>
     <%- body %>
     <br>
-    After
 </body>
 </html>
