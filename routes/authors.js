@@ -17,7 +17,6 @@ router.get('/', async (req, res) => {
     } catch {
         res.redirect('/')
     }
-  res.render('authors/index')
 })
 
 // New Author route
@@ -38,7 +37,7 @@ router.post('/', async (req, res) => {
         res.render('authors/new', {
             author: author,
             errorMessage: 'Error creating Author'
-    })
+        })
     }
 })
 module.exports = router
