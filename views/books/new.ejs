@@ -1,0 +1,8 @@
+<h2>New Book</h2>
+<%# use post request to server which can only be done with a form %>
+<%# multipart for that could inlcude form data using multer library %>
+<form action="/books" method = "POST" enctype="multipart/form-data">
+    <%- include('_form_fields') %>
+    <a href="/books">Cancel</a>
+    <button type="submit">Create</button>
+</form>
