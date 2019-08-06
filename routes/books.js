@@ -1,18 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const multer = require('multer')
-const path = require('path')
-const fs = require('fs')//file system library included in node.js
 const Book = require('../models/book')
-const uploadPath = path.join('public', Book.coverImageBasePath)//Joins two paths
 const Author = require('../models/author')
 const imageMimeTypes = ['image/jpeg', 'image/png', 'images/gif']//Types of image files the server accepts
-const upload = multer({
-    dest: uploadPath, //dest= destination (upload path)
-    fileFilter: (req, file, callback) => {// allows to filter what files server accepts
-        callback(null, imageMimeTypes.includes(file.mimetype))//null is the error parameter
-    }
-})
+
 
 // All Books Route
 router.get('/', async (req, res) => {
@@ -45,35 +36,26 @@ router.get('/new', async (req, res) => {
 
 // Create Book Route
 //single file of name cover
-router.post('/', upload.single('cover'), async (req, res) => {
-    const fileName = req.file != null ? req.file.filename : null//set filename if it exists
+router.post('/', async (req, res) => {
     //We set it to null so we can get an error when they haven't uploaded one
     const book = new Book({
         title: req.body.title,
         author: req.body.author,
         publishDate: new Date(req.body.publishDate), //Convert into date from string using Date function
         pageCount: req.body.pageCount,
-        coverImageName: fileName,
         description: req.body.description
     })
+    saveCover(book, req.body.cover)
 
     try {
         const newBook = await book.save()
         // res.redirect(`books/${newBook.id}`)
         res.redirect(`books`)
     } catch {
-        if (book.coverImageName != null){
-        removeBookCover(book.coverImageName)
-        }
         renderNewPage(res, book, true)//pass existing book and true for error
     }
 })
 
-function removeBookcover(fileName) {
-    fs.unlink(path.join(uploadPath, fileName), err => {
-        if (err) console.error(err)
-    })
-}
 
 //Default set hasError to false
 async function renderNewPage(res, book, hasError = false) {
@@ -87,6 +69,16 @@ async function renderNewPage(res, book, hasError = false) {
         res.render('books/new', params)
     } catch{
         res.redirect('/books')
+    }
+}
+
+function savecover(book, coverEncoded){
+    if (coverEncoded == null) return 
+    const cover = JSON.parse(coverEncoded)
+    // check if there is a cover and its the correct file type
+    if (cover != null && imageMimeTypes.includes(cover.type)) {
+        book.coverImage = new Buffer.from(cover.data, 'base64')//Convert the buffer from base64
+        book.coverImageType = cover.type
     }
 }
 

@@ -2,5 +2,3 @@
 .env
 #Use .JSON file to include node_modules
 node_modules
-#don't include test uploads
-public/uploads

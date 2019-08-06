@@ -1,7 +1,6 @@
 // model is usually singular of views
 const mongoose = require('mongoose')
-const path = require('path')
-const coverImageBasePath = 'uploads/bookCovers'
+
 
 // Schema is like an sql database
 const bookSchema = new mongoose.Schema({
@@ -25,7 +24,11 @@ const bookSchema = new mongoose.Schema({
         required: true,
         default: Date.now//Sets the date to current date so don't have to set
     },
-    coverImageName: {
+    coverImage: {
+        type: Buffer,
+        required: true
+    },
+    coverImageType: {
         type: String,
         required: true
     },
@@ -38,11 +41,11 @@ const bookSchema = new mongoose.Schema({
 
 bookSchema.virtual('coverImagePath').get(function() {
     //Use normal function to have access to this. property
-    if (this.coverImageName != null) {
-        return path.join('/', coverImageBasePath, this.coverImageName)
+    if (this.coverImage != null && this.coverImageType != null) {
+        return `data:${this.coverImageType};charset=utf-8;base64,
+        ${this.coverImage.toString('base64')}`
     }
 })
 
 // Expot the schema with a new name Author
 module.exports = mongoose.model('Book', bookSchema)
-module.exports.coverImageBasePath = coverImageBasePath
