@@ -3,6 +3,9 @@
 @import 'shared/header.css';
 @import 'shared/buttons.css';
 @import 'shared/form.css';
+@import 'shared/author.css';
+@import 'shared/books.css';
+/* These imports are only loaded after the initial css files are loaded */
 
 :root {
     font-family: 'Raleway', 'sans-serif';
@@ -33,4 +36,8 @@ body {
 .page-header {
     font-size: 2rem;
     font-weight: 500;
+}
+
+.error-message {
+    color: hsl( var(--color-danger-hue), 100%, 50%);
 }
