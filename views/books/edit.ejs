@@ -1,0 +1,10 @@
+<h2>Edit Book</h2>
+<%# use post request to server which can only be done with a form %>
+<%# multipart for that could inlcude form data using multer library  enctype="multipart/form-data"%>
+<%# multipart form is gone due to encoding from filepond %>
+<%# method overrider parameter %>
+<form action="/books/<%= book.id %>?_method=PUT" method = "POST">
+    <%- include('_form_fields') %>
+    <a href="/books">Cancel</a>
+    <button type="submit">Update</button>
+</form>
